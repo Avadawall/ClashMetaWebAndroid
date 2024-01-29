@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="self"
+            type="com.github.kr328.clash.design.WebPropertiesDesign" />
+        <variable
+            name="profile"
+            type="com.github.kr328.clash.service.model.Profile" />
+
+        <variable
+            name="wifiState"
+            type="String" />
+        <variable
+            name="ipv4UrlText"
+            type="String" />
+        <variable
+            name="secretText"
+            type="String" />
+
+        <import type="com.github.kr328.clash.service.model.Profile.Type" />
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@{self.surface.insets.start}"
+        android:paddingEnd="@{self.surface.insets.end}">
+
+        <com.github.kr328.clash.design.view.ObservableScrollView
+            android:id="@+id/scroll_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@{(float) self.surface.insets.top + @dimen/toolbar_height}"
+                android:paddingBottom="@{self.surface.insets.bottom}">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/item_padding_vertical">
+
+                    <View
+                        android:layout_width="@dimen/tips_icon_size"
+                        android:layout_height="@dimen/tips_icon_size"
+                        android:layout_marginHorizontal="@dimen/tips_icon_margin"
+                        android:background="@drawable/ic_outline_info" />
+
+                    <TextView
+                        android:id="@+id/tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/item_tailing_margin"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+
+                <com.github.kr328.clash.design.view.WifiCardView
+                    android:id="@+id/wifiCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    app:connectText="@{wifiState}"
+                    app:ipv4UrlText="@{ipv4UrlText}"
+                    app:secretText="@{secretText}"/>
+
+            </LinearLayout>
+        </com.github.kr328.clash.design.view.ObservableScrollView>
+
+        <com.github.kr328.clash.design.view.ActivityBarLayout
+            android:id="@+id/activity_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@{self.surface.insets.top}">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/item_tailing_margin">
+
+                <include
+                    layout="@layout/common_activity_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/action_layout" />
+
+
+            </RelativeLayout>
+        </com.github.kr328.clash.design.view.ActivityBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

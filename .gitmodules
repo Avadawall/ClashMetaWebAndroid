@@ -1,0 +1,4 @@
+[submodule "core/src/foss/golang/clash"]
+	path = core/src/foss/golang/clash
+	url = https://github.com/Avadawall/mihomo.git
+	branch = master
