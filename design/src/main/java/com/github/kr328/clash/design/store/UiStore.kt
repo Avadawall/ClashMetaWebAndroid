@@ -59,7 +59,7 @@ class UiStore(context: Context) {
 
     var accessControlSystemApp: Boolean by store.boolean(
         key = "access_control_system_app",
-        defaultValue = false,
+        defaultValue = true,
     )
 
     companion object {

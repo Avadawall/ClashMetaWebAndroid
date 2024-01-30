@@ -31,18 +31,15 @@ class ConfigurationModule (service: Service) : Module<ConfigurationModule.LoadEx
         var loaded: UUID? = null
 
         reload.trySend(Unit)
-        Log.w("ConfigurationModule-x")
         while (true) {
             val changed: UUID? = select {
                 broadcasts.onReceive {
-                    Log.w("ConfigurationModule-0")
                     if (it.action == Intents.ACTION_PROFILE_CHANGED)
                         UUID.fromString(it.getStringExtra(Intents.EXTRA_UUID))
                     else
                         null
                 }
                 reload.onReceive {
-                    Log.w("ConfigurationModule-1")
                     null
                 }
             }
@@ -50,10 +47,8 @@ class ConfigurationModule (service: Service) : Module<ConfigurationModule.LoadEx
             try {
                 val current = store.activeProfile
                     ?: throw NullPointerException("No profile selected")
-                Log.w("ConfigurationModule-2 ${changed.toString()}")
                 if (current == loaded && changed != null && changed != loaded)
                     continue
-                Log.w("ConfigurationModule-3")
                 loaded = current
 
                 val active = ImportedDao().queryByUUID(current)

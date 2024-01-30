@@ -25,9 +25,7 @@ class UiNotificationModule(service: Service) : Module<Unit>(service) {
             addAction(Intents.ACTION_WUI_SERVICE_STARTED)
         }
         while (true) {
-            Log.w("*****>uiNotification before receive")
             keeper.receive()
-            Log.w("======>uiNotification after receive")
             val notification = builder
                 .setContentTitle("clash ui")
                 .setContentText(service.getText(R.string.running))

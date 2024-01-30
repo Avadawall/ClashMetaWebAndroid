@@ -88,7 +88,6 @@ func (wh *WriteHandler) Validate(w http.ResponseWriter, r *http.Request) {
 		wh.profile.setErr(true, err.Error())
 		return
 	}
-	log.Warnln("+++++++++>%s++++%s", wh.profile.Uuid, req.Uuid)
 	if wh.profile.Uuid != req.Uuid {
 		RendErr(w, r, http.StatusNoContent, route.ErrNotFound)
 		wh.profile.setErr(true, "uuid not match")

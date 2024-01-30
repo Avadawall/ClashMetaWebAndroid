@@ -109,7 +109,7 @@ func commitAndVerify(w http.ResponseWriter, r *http.Request) {
 	}
 	defer serviceCb.sem.Release(1)
 	serviceCb.handler.Validate(w, r)
-	log.Warnln("hasErr=%v, %s", serviceCb.handler.HasError(), serviceCb.handler.ErrProfile())
+
 	if !serviceCb.handler.HasError() {
 		bytes, _ := json.Marshal(serviceCb.handler.GetProfile())
 		serviceCb.reportStatus(string(bytes))

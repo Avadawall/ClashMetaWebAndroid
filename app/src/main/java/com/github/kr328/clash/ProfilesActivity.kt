@@ -1,6 +1,7 @@
 package com.github.kr328.clash
 
 import androidx.activity.result.contract.ActivityResultContracts
+import com.github.kr328.clash.common.log.Log
 import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.common.util.setUUID
 import com.github.kr328.clash.common.util.ticker
@@ -64,6 +65,10 @@ class ProfilesActivity : BaseActivity<ProfilesDesign>() {
                             startActivityForResult(
                                 ActivityResultContracts.StartActivityForResult(),
                                 WebPropertiesActivity::class.intent.setUUID(it.profile.uuid))
+                        }
+
+                        else -> {
+                            Log.w("Profile request no match ${it}")
                         }
                     }
                 }

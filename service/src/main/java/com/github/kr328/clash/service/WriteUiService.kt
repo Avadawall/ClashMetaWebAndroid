@@ -80,16 +80,13 @@ class WriteUiService : BaseService() {
                 WriteUIProcessor.fetch(self, UUID.fromString(uuid))
                 val port = ServiceStore(self).externalPort
                 val secret = ServiceStore(self).externalSecret
-                Log.w("***********************> $uuid, $name, $pType, $source, $interval")
                 Clash.startWriteUi(self.processingDir, port, secret, uuid, name, pType, source, interval, object : UiCallback {
                     override fun report(profileJson: String) {
-                        Log.w("profileJson=====>: $profileJson")
                         profile = Json.Default.decodeFromString(
                             CommonProfile.serializer(),
                             profileJson
                         )
                         isReported = true
-                        Log.i("^^^^^^^^^^^^^^^^^^^UiCallback callback string: $profile")
                     }
                 } )
             }
@@ -105,7 +102,6 @@ class WriteUiService : BaseService() {
 
         runBlocking {
             if (isReported) {
-                Log.w("after commit profile $profile")
                 if (!profile.hasErr) {
                     WriteUIProcessor.update(self, profile)
                     Log.i("WriteUiService insert imported and destroyed successfully")

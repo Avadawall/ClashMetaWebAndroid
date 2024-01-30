@@ -21,7 +21,6 @@ class WriteUiModule(service: Service) : Module<WriteUiModule.LoadException>(serv
 //                Log.w("WriteModule before select ===>")
 //                val newId = select {
 //                    broadcasts.onReceive {
-//                        Log.w("WriteModule action ${it.action}")
 //                        if (it.action == Intents.ACTION_WUI_SERVICE_STARTED) {
 //                            it.getStringExtra(Intents.EXTRA_UUID)
 //                        } else {
@@ -29,12 +28,9 @@ class WriteUiModule(service: Service) : Module<WriteUiModule.LoadException>(serv
 //                        }
 //                    }
 //                }
-//                Log.w("WriteModule newId $newId")
-//
 //                val port = ServiceStore(service).externalPort
 //                val secret = ServiceStore(service).externalSecret
 //                Clash.startWriteUi(service.processingDir, port, secret)
-//                Log.w("write Ui listener started with $port - $secret")
 //            } catch (e: Exception) {
 //                return enqueueEvent(LoadException(e.message ?: "unknown"))
 //            }
