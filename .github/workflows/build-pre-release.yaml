@@ -32,6 +32,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Convert Base64 to .jks
+        run: |
+          echo "${{ secrets.SIGNING_TOKEN }}" | base64 --decode > ./release.keystore      
+
       - name: Signing properties
         env:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
