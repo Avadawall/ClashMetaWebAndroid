@@ -1,66 +1,72 @@
+<p align="right">
+   <strong>中文</strong> | <a href="./README.en.md">English</a>
+</p>
+
+
 ## Clash Meta Web Android
 
-A Graphical user interface of [Clash.Meta](https://github.com/MetaCubeX/Clash.Meta) for Android
+这是 Clash.Meta 在 Android 上的图形用户界面。
 
-
-### Feature
-
-1. Feature of [Clash.Meta](https://github.com/MetaCubeX/Clash.Meta)
+### 特点
+1. Clash.Meta 的特点：
+> \[!IMPORTANT] 
+2. 添加 PC 远程外部控制器功能到 Clash Android 中，使用 WebUI 来添加和修改配置。
+> - 在设置中启用 Web UI 以监控 Clash 状态。
+> - 通过选择 Web UI 来添加或更改配置文件。
 > \[!IMPORTANT]
-> 2. Add PC Remote External Controller feature to Clash of Android, use WebUI to Add and Modify configuration
-> - enable Web UI in setting to monitor clash state
-> - add or change profile by select Web UI
 
-> \[!IMPORTANT]
-> ### How to use WebUI feature
-> 1. first, need to connect local network with WIFI. 
-> 2. enable remote controller in network setting. default passcode is "clash", after start Clash Android, the phone local IP address will displayed. connect to Android of Clash IP address with browser. then, you check clash status from PC browser.
-> 3. add profile, select "Web UI", the local IP will displayed, connect to Clash of Android with the IP, you need to select URL or FILE and input URL and upload the configure file to add profile.
+> ### 如何使用 WebUI 功能
+> 1. 首先，需要手机连接到本地 WIFI 网络。
 
-### Requirement
+> 2. 在设置->网络 启动打开远端控制。默认密码是 “clash”。启动 Clash实例后，手机的本地 IP 地址将显示出来。通过PC浏览器连接到 Clash Android 的 IP:Port 地址，然后你可以在 PC 浏览器中查看 Clash 的状态。
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_013936.jpg" width="300">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_013956.jpg" width="300">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_014008.jpg" width="300">
 
-- Android 5.0+ (minimum)
-- Android 7.0+ (recommend)
-- `armeabi-v7a` , `arm64-v8a`, `x86` or `x86_64` Architecture
+> 3. 添加配置信息，点击 + , 选择 “网页 UI”，手机的IP:Port 信息将显示出来。通过该 IP:Port 地址连接到 Clash 实例。
 
-### License
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_170014.jpg" width="300">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_162640.jpg" width="300">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/Screenshot_162648.jpg" width="300">
 
-See also [LICENSE](./LICENSE) and [NOTICE](./NOTICE)
+> 4. 转到PC电脑上进行操作，根据显示的IP:port, 使用浏览器登录到Clash Meta Web Android 服务上进行操作，你需要选择 URL 或文件配置输入，然后上传配置文件或者输入服务端URL以添加配置(每次添加完成后，你需要返回后，再进入才能添加下一个配置)
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/cmwa-web-login.png" width="500">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/cmwa-web-input.png" width="500">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/cmwa-web-inputdone.png" width="500">
+<img src="https://raw.githubusercontent.com/Avadawall/ClashMetaWebAndroid/master/.github/images/cmwa-web-url-input.png" width="500">
 
-### Privacy Policy
+### 要求
 
-See also [PRIVACY_POLICY.md](./PRIVACY_POLICY.md)
+- Android 5.0+（最低要求）
+- Android 7.0+（推荐）
+- armeabi-v7a、arm64-v8a、x86 或 x86_64 架构
 
-### Build
+### 许可证
+请参阅 [LICENSE](./LICENSE) 和 [NOTICE](./NOTICE) 
 
-1. Update submodules
+### 隐私政策
+请参阅 [PRIVACY_POLICY.md](./PRIVACY_POLICY.md)
 
-   ```bash
-   git submodule update --init --recursive
-   ```
+### 构建
+1. 更新子模块
+    ```bash
+    git submodule update --init --recursive
+    ```
+2. 安装 OpenJDK 11、Android SDK、CMake 和 Golang
+3. 在项目根目录创建 local.properties 文件，内容如下：
+    ```properties
+    sdk.dir=/path/to/android-sdk
+    ```
 
-2. Install **OpenJDK 11**, **Android SDK**, **CMake** and **Golang**
-
-3. Create `local.properties` in project root with
-
-   ```properties
-   sdk.dir=/path/to/android-sdk
-   ```
-
-4. Create `signing.properties` in project root with
-
-   ```properties
-   keystore.path=/path/to/keystore/file
-   keystore.password=<key store password>
-   key.alias=<key alias>
-   key.password=<key password>
-   ```
-
-5. Build
-
-   ```bash
-   ./gradlew app:assembleMetaRelease
-   ```
-
-6. Pick `app-<version>-meta-<arch>-release.apk` in `app/build/outputs/apk/meta/release/`
-
+4. 在项目根目录创建 signing.properties 文件，内容如下：
+    ```properties
+    keystore.path=/path/to/keystore/file
+    keystore.password=<密钥库密码>
+    key.alias=<密钥别名>
+    key.password=<密钥密码>
+    ```
+5. 构建
+    ```bash
+    ./gradlew app:assembleMetaRelease
+    ```
+6. 在 app/build/outputs/apk/meta/release/ 目录中选择 app-<version>-meta-<arch>-release.apk
