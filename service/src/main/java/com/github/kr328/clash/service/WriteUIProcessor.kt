@@ -21,12 +21,13 @@ import okhttp3.Request
 import java.math.BigDecimal
 import java.util.*
 
-data class UserInfo(val uplaod: Long, val download:Long, val total: Long, val expire: Long)
+data class UserInfo(val uplaod: Long, val download: Long, val total: Long, val expire: Long)
 
 object WriteUIProcessor {
     private val profileLock = Mutex()
-//    private lateinit  var snapshot: CommonProfile
-    suspend fun fetch(context: Context, uuid: UUID)  {
+
+    //    private lateinit  var snapshot: CommonProfile
+    suspend fun fetch(context: Context, uuid: UUID) {
         withContext(NonCancellable) {
             profileLock.withLock {
                 val pending = PendingDao().queryByUUID(uuid)
@@ -38,7 +39,7 @@ object WriteUIProcessor {
                         .copyRecursively(context.processingDir, overwrite = true)
                     return@withLock
                 }
-                if (imported != null ) {
+                if (imported != null) {
                     context.processingDir.deleteRecursively()
                     context.processingDir.mkdirs()
 
@@ -46,7 +47,7 @@ object WriteUIProcessor {
                         .copyRecursively(context.processingDir, overwrite = true)
                     return@withLock
                 }
-                throw  IllegalArgumentException("profile $uuid not found")
+                throw IllegalArgumentException("profile $uuid not found")
             }
         }
     }
@@ -54,7 +55,7 @@ object WriteUIProcessor {
     suspend fun update(context: Context, profile: CommonProfile) {
         withContext(NonCancellable) {
             profileLock.withLock {
-
+                var userInfo = UserInfo(0, 0, 0, 0)
                 context.importedDir.resolve(profile.uuid)
                     .deleteRecursively()
                 context.processingDir
@@ -63,33 +64,34 @@ object WriteUIProcessor {
                 val old = ImportedDao().queryByUUID(UUID.fromString(profile.uuid))
 
                 if (profile.ptype == Profile.Type.Url.ordinal) {
-                    val userInfo = fetchUserInfo(profile.source)
-
-                    val new = Imported(
-                        UUID.fromString(profile.uuid),
-                        profile.name,
-                        Profile.Type.values()[profile.ptype],
-                        profile.source,
-                        profile.interval,
-                        userInfo.uplaod, userInfo.download, userInfo.total, userInfo.expire,
-                        old?.createdAt ?: System.currentTimeMillis()
-                    )
-
-                    if (old != null) {
-                        ImportedDao().update(new)
-                    } else {
-                        ImportedDao().insert(new)
-                    }
-
-                    PendingDao().remove(UUID.fromString(profile.uuid))
-                    context.pendingDir.resolve(profile.uuid).deleteRecursively()
-                    context.sendProfileChanged(UUID.fromString(profile.uuid))
+                    userInfo = fetchUserInfo(profile.source)
                 }
+                val new = Imported(
+                    UUID.fromString(profile.uuid),
+                    profile.name,
+                    Profile.Type.values()[profile.ptype],
+                    profile.source,
+                    profile.interval,
+                    userInfo.uplaod, userInfo.download, userInfo.total, userInfo.expire,
+                    old?.createdAt ?: System.currentTimeMillis()
+                )
+
+                if (old != null) {
+                    ImportedDao().update(new)
+                } else {
+                    ImportedDao().insert(new)
+                }
+
+                PendingDao().remove(UUID.fromString(profile.uuid))
+                context.pendingDir.resolve(profile.uuid).deleteRecursively()
+                context.sendProfileChanged(UUID.fromString(profile.uuid))
+
             }
         }
 
     }
-    private suspend fun fetchUserInfo(source: String): UserInfo  {
+
+    private suspend fun fetchUserInfo(source: String): UserInfo {
 
         return withContext(Dispatchers.IO) {
             val client = OkHttpClient()
@@ -102,7 +104,7 @@ object WriteUIProcessor {
 
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful || response.headers["subscription-userinfo"] == null)
-                         UserInfo(0,0,0,0)
+                        UserInfo(0, 0, 0, 0)
 
                     var upload: Long = 0
                     var download: Long = 0
@@ -122,12 +124,12 @@ object WriteUIProcessor {
                                 info[0].contains("download") && info[1].isNotEmpty() -> download =
                                     BigDecimal(info[1]).longValueExact()
 
-                                info[0].contains("total") && info[1].isNotEmpty() ->  total =
+                                info[0].contains("total") && info[1].isNotEmpty() -> total =
                                     BigDecimal(info[1]).longValueExact()
 
                                 info[0].contains("expire") && info[1].isNotEmpty() -> {
                                     if (info[1].isNotEmpty()) {
-                                        expire = (info[1].toDouble()*1000).toLong()
+                                        expire = (info[1].toDouble() * 1000).toLong()
                                     }
                                 }
                             }
@@ -138,7 +140,7 @@ object WriteUIProcessor {
 
             } catch (e: Exception) {
                 Log.e("fetch user information with error $e")
-                UserInfo(0,0,0,0)
+                UserInfo(0, 0, 0, 0)
             }
         }
     }
